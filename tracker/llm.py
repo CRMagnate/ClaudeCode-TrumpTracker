@@ -77,8 +77,22 @@ def _call_provider(name: str, messages: list[dict], max_tokens: int) -> str:
     raise requests.HTTPError(f"{name}: HTTP 429 after retry")
 
 
+_last_call = 0.0
+
+
 def chat_json(system: str, user: str, max_tokens: int = 700) -> tuple[str, str]:
-    """Return (response text, provider name). Fails over per I6."""
+    """Return (response text, provider name). Fails over per I6.
+
+    LLM_MIN_INTERVAL (seconds, default 0) paces successive calls so bulk
+    backfills stay inside free-tier rate limits instead of burning mentions.
+    """
+    global _last_call
+    min_interval = float(os.environ.get("LLM_MIN_INTERVAL", "0") or 0)
+    if min_interval > 0:
+        wait = _last_call + min_interval - time.monotonic()
+        if wait > 0:
+            time.sleep(wait)
+    _last_call = time.monotonic()
     messages = [{"role": "system", "content": system}, {"role": "user", "content": user}]
     errors: list[str] = []
     for name in _provider_order():

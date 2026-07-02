@@ -53,13 +53,18 @@ def _now_iso() -> str:
 
 def run_poll(backfill_days: int | None = None, limit: int | None = None,
              send_alerts: bool = True, feed: list[dict] | None = None,
-             chat=None, store: Store | None = None) -> dict:
+             chat=None, store: Store | None = None, deepen: bool = False) -> dict:
     store = store or Store()
     watchlist = Watchlist()
     prefilter = Prefilter(watchlist)
 
     last_seen = store.state.get("truthsocial_last_seen_id")
-    if last_seen is None and backfill_days is None:
+    if deepen:
+        # History extension: ignore the cursor and re-scan the archive window;
+        # the mention ledger dedupes everything already processed (I5). The
+        # cursor itself never moves backwards.
+        last_seen = None
+    if last_seen is None and backfill_days is None and not deepen:
         backfill_days = 14  # first run defaults to the M1 backfill window
 
     counts = {"new": 0, "skipped_no_text": 0, "skipped_not_trump": 0,
@@ -123,10 +128,14 @@ def run_poll(backfill_days: int | None = None, limit: int | None = None,
         store.add_mention(json.loads(record.model_dump_json()))
         processed_cursor = m["id"].split(":")[1]
 
-    if processed_cursor is not None:
-        store.state["truthsocial_last_seen_id"] = processed_cursor
-    elif cursor is not None and not new_mentions:
-        store.state["truthsocial_last_seen_id"] = cursor
+    prev_cursor = store.state.get("truthsocial_last_seen_id")
+    for candidate in (processed_cursor, cursor if not new_mentions else None):
+        if candidate is None:
+            continue
+        # monotonic: a deepen/backfill pass must never rewind the cursor
+        if prev_cursor is None or int(candidate) > int(prev_cursor):
+            store.state["truthsocial_last_seen_id"] = candidate
+        break
 
     alert_counts = {"sent": 0, "failed": 0}
     if send_alerts:
@@ -203,6 +212,8 @@ def main() -> int:
     poll.add_argument("--backfill-days", type=int, default=None)
     poll.add_argument("--limit", type=int, default=None, help="max LLM classifications this run")
     poll.add_argument("--no-alerts", action="store_true")
+    poll.add_argument("--deepen", action="store_true",
+                      help="ignore the cursor and extend history backwards (dedupe-safe)")
     sub.add_parser("test-alert", help="send a P1-formatted test alert")
     retry = sub.add_parser("retry-failed", help="re-classify classification_failed mentions")
     retry.add_argument("--limit", type=int, default=None)
@@ -210,7 +221,7 @@ def main() -> int:
 
     if args.cmd == "poll":
         run_poll(backfill_days=args.backfill_days, limit=args.limit,
-                 send_alerts=not args.no_alerts)
+                 send_alerts=not args.no_alerts, deepen=args.deepen)
     elif args.cmd == "test-alert":
         run_test_alert()
     elif args.cmd == "retry-failed":
