@@ -1,0 +1,323 @@
+[
+ {
+  "signal": {
+   "mention_id": "truthsocial:116769225357410422",
+   "is_signal": true,
+   "priority": "P1",
+   "direction": "bullish",
+   "asset_type": "company",
+   "tickers": [
+    "INTC",
+    "NVDA",
+    "AAPL"
+   ],
+   "entities": [
+    "Intel",
+    "Nvidia",
+    "Apple"
+   ],
+   "exact_quote": "So I decided to help Intel because we need to design and build our Chips right here in America.",
+   "confidence": 0.9,
+   "rationale": "The statement explicitly mentions helping Intel and implies a positive impact on the company's value.",
+   "sarcasm_or_negation": false
+  },
+  "source": "truthsocial",
+  "author": "Donald Trump",
+  "url": "https://truthsocial.com/@realDonaldTrump/116769225357410422",
+  "timestamp_utc": "2026-06-18T04:29:38.755Z",
+  "source_text": "The Technology the World relies on was invented in America. We all remember \"Intel Inside.\" Stupid Presidents took our Economy for granted, and let Taiwan and others steal our Semiconductor Factories. They forgot to protect our Industries with TARIFFS. When I won my Second Term (Third, actually!), it was clear America needed its Semiconductor Industry to come back to the U.S.A. We design everything, but we need to BUILD it here, NOW! So I decided to help Intel because we need to design and build our Chips right here in America. First, we helped bring in Nvidia, and they agreed to build their first level Chips with Intel. Next, Elon agreed to build his TerraFab, the largest Chip Factory in the World, designed together with Intel's Technology team. And, finally, Apple has agreed to work with Intel to design and build its Chips in America. We decided to help Intel in exchange for 10% of their shares. Is that too much or, too little? They were worth around 100 Billion Dollars when we made our offer. Now they are worth over 600 BILLION DOLLARS! Nine months, and they've increased in value over HALF A TRILLION DOLLARS. America's stake is now over 60 Billion Dollars. When was the last time a President made America money?? Thank you for your attention to this matter! President DONALD J. TRUMP",
+  "llm_provider": "groq",
+  "classified_at_utc": "2026-07-02T04:12:08.505013+00:00",
+  "corroborations": []
+ },
+ {
+  "signal": {
+   "mention_id": "truthsocial:116771467656011073",
+   "is_signal": true,
+   "priority": "P4",
+   "direction": "bullish",
+   "asset_type": "macro",
+   "tickers": [
+    "DJT"
+   ],
+   "entities": [
+    "stock markets"
+   ],
+   "exact_quote": "THE STOCK MARKETS ARE ROARING",
+   "confidence": 0.6,
+   "rationale": "The statement mentions the stock market in a positive context, implying a bullish outlook on the overall market.",
+   "sarcasm_or_negation": false
+  },
+  "source": "truthsocial",
+  "author": "Donald Trump",
+  "url": "https://truthsocial.com/@realDonaldTrump/116771467656011073",
+  "timestamp_utc": "2026-06-18T13:59:53.481Z",
+  "source_text": "OIL IS FLOWING, IRAN CAN NEVER HAVE A NUCLEAR WEAPON (THE WORLD WILL BE SAFE!), THE STOCK MARKETS ARE ROARING, JOBS ARE AT RECORDS, AND PRICES ARE DROPPING (AFFORDABILITY!). OUR COUNTRY IS STRONG, SAFE, AND RESPECTED LIKE NEVER BEFORE. \"YOU'RE WELCOME!\" President DJT",
+  "llm_provider": "groq",
+  "classified_at_utc": "2026-07-02T04:12:25.812334+00:00",
+  "corroborations": []
+ },
+ {
+  "signal": {
+   "mention_id": "truthsocial:116772135215188960",
+   "is_signal": true,
+   "priority": "P4",
+   "direction": "bullish",
+   "asset_type": "macro",
+   "tickers": [
+    "DJT"
+   ],
+   "entities": [
+    "Stock Market"
+   ],
+   "exact_quote": "Check out the Stock Market.",
+   "confidence": 0.6,
+   "rationale": "The statement implies a positive outlook for the US stock market.",
+   "sarcasm_or_negation": false
+  },
+  "source": "truthsocial",
+  "author": "Donald Trump",
+  "url": "https://truthsocial.com/@realDonaldTrump/116772135215188960",
+  "timestamp_utc": "2026-06-18T16:49:39.626Z",
+  "source_text": "There is no 300 Billion Dollar payment to Iran by the U.S. That's Fake News! All there is for the U.S. is Success, Lower Oil Prices, and Victory. Check out the Stock Market. Dumocrat propaganda at play!!! President DJT",
+  "llm_provider": "groq",
+  "classified_at_utc": "2026-07-02T04:12:34.925244+00:00",
+  "corroborations": []
+ },
+ {
+  "signal": {
+   "mention_id": "truthsocial:116772416131420569",
+   "is_signal": true,
+   "priority": "P4",
+   "direction": "bullish",
+   "asset_type": "macro",
+   "tickers": [],
+   "entities": [
+    "Oil",
+    "Stocks"
+   ],
+   "exact_quote": "The Markets are loving what is happening with Oil Prices way down, and Stocks way up.",
+   "confidence": 0.7,
+   "rationale": "The statement implies a positive impact on the markets due to decreasing oil prices and increasing stock prices.",
+   "sarcasm_or_negation": false
+  },
+  "source": "truthsocial",
+  "author": "Donald Trump",
+  "url": "https://truthsocial.com/@realDonaldTrump/116772416131420569",
+  "timestamp_utc": "2026-06-18T18:01:06.103Z",
+  "source_text": "The United States is committed to PEACE, and we encourage everyone in the Middle East Region to maintain their commitment to allowing our negotiations to beautifully unfold. The Markets are loving what is happening with Oil Prices way down, and Stocks way up. We expect a complete Ceasefire on all fronts, including Lebanon, Hezbollah, and Israel. Thank you for your attention to this matter! President DONALD J. TRUMP",
+  "llm_provider": "groq",
+  "classified_at_utc": "2026-07-02T04:12:40.162501+00:00",
+  "corroborations": []
+ },
+ {
+  "signal": {
+   "mention_id": "truthsocial:116773596380247574",
+   "is_signal": true,
+   "priority": "P3",
+   "direction": "bullish",
+   "asset_type": "sector",
+   "tickers": [],
+   "entities": [
+    "Aluminum"
+   ],
+   "exact_quote": "we barely make it in the United States but, in particular, it's all about National Security, and Oklahoma can lead the way",
+   "confidence": 0.7,
+   "rationale": "The statement expresses support for an aluminum plant in Oklahoma, implying a positive outlook for the aluminum sector.",
+   "sarcasm_or_negation": false
+  },
+  "source": "truthsocial",
+  "author": "Donald Trump",
+  "url": "https://truthsocial.com/@realDonaldTrump/116773596380247574",
+  "timestamp_utc": "2026-06-18T23:01:15.272Z",
+  "source_text": "MAGA Warrior Mike Mazzei is running for Governor in Oklahoma, where I was the ONLY President to win ALL 77 Counties in three straight Elections. Additionally, I won more votes than any Candidate in the State's History! I LOVE Oklahoma, and Mike has my COMPLETE and TOTAL Endorsement for Governor! Meanwhile, his Runoff Election Opponent, Gentner Drummond, is a FAKE Republican. The Drummonds donated to SLEEPY Joe Biden, and the totally corrupt Lincoln Project, at levels that are shameful - Frankly, that makes him a Radical Left Dumocrat. Additionally, he wants to dethrone a magnificent, Job producing, desperately needed Aluminum Plant that will be one of the best projects ever conceived or built in the Great State of Oklahoma. The group that's doing it is extraordinarily wealthy and, if they don't do it in Oklahoma, they have 20 other sites that would love to have them. We need Aluminum for many reasons, we barely make it in the United States but, in particular, it's all about National Security, and Oklahoma can lead the way. Very simply, Mike Mazzei is for this desperately needed Job Producer. Drummond, for his own reasons, is not - He even SUED, unsuccessfully, to block it. It's going to be the Biggest Aluminum Plant in the Country, and it's all financed and done. Gentner Drummond has also stated publicly he had \"no opinion\" on the BOGUS IMPEACHMENT of a gentleman named, President Donald J. Trump (ME!). All Republicans feel the opposite on the Dumocrat inspired Impeachment Hoax. He even SUED to BLOCK a religious based charter school strongly supported by my Administration - Very troubling for Educational Freedom, and an outright attack on Christianity! Drummond is not the right guy, he's got a bad attitude, and he doesn't stand for the Values of Oklahoma, which must VOTE \"MIKE MAZZEI FOR GOVERNOR\" on August 25th - HE WILL NEVER LET YOU DOWN! Thank you for your attention to this matter. President DONALD J. TRUMP",
+  "llm_provider": "groq",
+  "classified_at_utc": "2026-07-02T04:12:53.153603+00:00",
+  "corroborations": []
+ },
+ {
+  "signal": {
+   "mention_id": "truthsocial:116788451975276121",
+   "is_signal": true,
+   "priority": "P3",
+   "direction": "bullish",
+   "asset_type": "sector",
+   "tickers": [
+    "DJT"
+   ],
+   "entities": [
+    "North Sea Oil"
+   ],
+   "exact_quote": "OPEN NORTH SEA OIL!",
+   "confidence": 0.7,
+   "rationale": "The statement implies support for the North Sea oil sector.",
+   "sarcasm_or_negation": false
+  },
+  "source": "truthsocial",
+  "author": "Donald Trump",
+  "url": "https://truthsocial.com/@realDonaldTrump/116788451975276121",
+  "timestamp_utc": "2026-06-21T13:59:13.627Z",
+  "source_text": "Keir Starmer will resign as Prime Minister of The United Kingdom. He failed badly on two very important subjects- IMMIGRATION AND ENERGY (OPEN NORTH SEA OIL!). I wish him well! President DJT",
+  "llm_provider": "groq",
+  "classified_at_utc": "2026-07-02T04:15:00.112421+00:00",
+  "corroborations": []
+ },
+ {
+  "signal": {
+   "mention_id": "truthsocial:116790096457517049",
+   "is_signal": true,
+   "priority": "P4",
+   "direction": "bullish",
+   "asset_type": "macro",
+   "tickers": [
+    "NYT",
+    "DJT"
+   ],
+   "entities": [
+    "U.S. Stock Market"
+   ],
+   "exact_quote": "the U.S. Stock Market and Jobs are at record HIGHS",
+   "confidence": 0.7,
+   "rationale": "The statement implies a positive outlook for the U.S. stock market and jobs, which is a macroeconomic indicator.",
+   "sarcasm_or_negation": false
+  },
+  "source": "truthsocial",
+  "author": "Donald Trump",
+  "url": "https://truthsocial.com/@realDonaldTrump/116790096457517049",
+  "timestamp_utc": "2026-06-21T20:57:26.429Z",
+  "source_text": "The headline in the Corrupt and Failing New York Times: \"What Changed After Almost 4 Months of War? Analysts Say Not Much.\" REALLY? Their Military is DONE, their Navy is GONE, their Air Force is GONE, their Launching Pads, Missiles, Drones and Manufacturing of same, is almost GONE, their top two sets of Leaders are GONE, their Inflation is at 250%, their Economy is BROKEN, their Soldiers aren't being paid, the Hormuz Strait is OPEN, THE OIL IS GUSHING, and the U.S. Stock Market and Jobs are at record HIGHS. That's what's CHANGED, you corrupt and unethical cowards, and MORE!!! President DJT",
+  "llm_provider": "groq",
+  "classified_at_utc": "2026-07-02T04:15:26.036770+00:00",
+  "corroborations": []
+ },
+ {
+  "signal": {
+   "mention_id": "truthsocial:116799167032916635",
+   "is_signal": true,
+   "priority": "P4",
+   "direction": "bearish",
+   "asset_type": "macro",
+   "tickers": [],
+   "entities": [
+    "oil"
+   ],
+   "exact_quote": "19 Millions Barrels of Oil flowed out of the Hormuz Strait yesterday, an all time RECORD. Oil prices are tumbling down, and the World is a much safer place!!!",
+   "confidence": 0.7,
+   "rationale": "The statement implies a decrease in oil prices due to a record amount of oil flowing out of the Hormuz Strait, which could negatively impact oil-related investments.",
+   "sarcasm_or_negation": false
+  },
+  "source": "truthsocial",
+  "author": "Donald Trump",
+  "url": "https://truthsocial.com/@realDonaldTrump/116799167032916635",
+  "timestamp_utc": "2026-06-23T11:24:12.430Z",
+  "source_text": "19 Millions Barrels of Oil flowed out of the Hormuz Strait yesterday, an all time RECORD. Oil prices are tumbling down, and the World is a much safer place!!! President DONALD J. TRUMP",
+  "llm_provider": "groq",
+  "classified_at_utc": "2026-07-02T04:19:14.326652+00:00",
+  "corroborations": []
+ },
+ {
+  "signal": {
+   "mention_id": "truthsocial:116817320899062447",
+   "is_signal": true,
+   "priority": "P4",
+   "direction": "bearish",
+   "asset_type": "macro",
+   "tickers": [],
+   "entities": [
+    "American Companies",
+    "European Countries"
+   ],
+   "exact_quote": "any Country that imposes such a Tax will immediately be met with a 100% TARIFF on any and all Goods sent to the United States of America",
+   "confidence": 0.8,
+   "rationale": "The statement implies a negative impact on American companies and trade with European countries due to the threatened tariffs.",
+   "sarcasm_or_negation": false
+  },
+  "source": "truthsocial",
+  "author": "Donald Trump",
+  "url": "https://truthsocial.com/@realDonaldTrump/116817320899062447",
+  "timestamp_utc": "2026-06-26T16:20:58.479Z",
+  "source_text": "Numerous European Countries have been discussing the imminent implementation of a Digital Services Tax on American Companies. Some of these Countries are close to actually doing this. Please let this statement serve to represent that any Country that imposes such a Tax will immediately be met with a 100% TARIFF on any and all Goods sent to the United States of America. This TARIFF will supersede Trade Deals made with the Country, whether implemented, signed, or not. Additionally, the 100% TARIFF will be immediately imposed, if they proceed. Thank you for your attention to this matter. President DONALD J. TRUMP",
+  "llm_provider": "groq",
+  "classified_at_utc": "2026-07-02T05:53:38.439464+00:00",
+  "corroborations": []
+ },
+ {
+  "signal": {
+   "mention_id": "truthsocial:116818353041386106",
+   "is_signal": true,
+   "priority": "P3",
+   "direction": "bullish",
+   "asset_type": "sector",
+   "tickers": [],
+   "entities": [
+    "Aluminum"
+   ],
+   "exact_quote": "We need Aluminum for many reasons, we barely make it in the United States but, in particular, it's all about National Security, and Oklahoma can lead the way.",
+   "confidence": 0.7,
+   "rationale": "The statement expresses support for an aluminum plant in Oklahoma, implying a positive outlook for the aluminum sector.",
+   "sarcasm_or_negation": false
+  },
+  "source": "truthsocial",
+  "author": "Donald Trump",
+  "url": "https://truthsocial.com/@realDonaldTrump/116818353041386106",
+  "timestamp_utc": "2026-06-26T20:43:27.722Z",
+  "source_text": "MAGA Warrior Mike Mazzei is running for Governor in Oklahoma, where I was the ONLY President to win ALL 77 Counties in three straight Elections. Additionally, I won more votes than any Candidate in the State's History! I LOVE Oklahoma, and Mike has my COMPLETE and TOTAL Endorsement for Governor! Meanwhile, his Runoff Election Opponent, Gentner Drummond, is a FAKE Republican. The Drummonds donated to SLEEPY Joe Biden, and the totally corrupt Lincoln Project, at levels that are shameful - Frankly, that makes him a Radical Left Dumocrat. Additionally, he wants to dethrone a magnificent, Job producing, desperately needed Aluminum Plant that will be one of the best projects ever conceived or built in the Great State of Oklahoma. The group that's doing it is extraordinarily wealthy and, if they don't do it in Oklahoma, they have 20 other sites that would love to have them. We need Aluminum for many reasons, we barely make it in the United States but, in particular, it's all about National Security, and Oklahoma can lead the way. Very simply, Mike Mazzei is for this desperately needed Job Producer. Drummond, for his own reasons, is not - He even SUED, unsuccessfully, to block it. It's going to be the Biggest Aluminum Plant in the Country, and it's all financed and done. Gentner Drummond has also stated publicly he had \"no opinion\" on the BOGUS IMPEACHMENT of a gentleman named, President Donald J. Trump (ME!). All Republicans feel the opposite on the Dumocrat inspired Impeachment Hoax. He even SUED to BLOCK a religious based charter school strongly supported by my Administration - Very troubling for Educational Freedom, and an outright attack on Christianity! Drummond is not the right guy, he's got a bad attitude, and he doesn't stand for the Values of Oklahoma, which must VOTE \"MIKE MAZZEI FOR GOVERNOR\" on August 25th - HE WILL NEVER LET YOU DOWN! Thank you for your attention to this matter. President DONALD J. TRUMP",
+  "llm_provider": "groq",
+  "classified_at_utc": "2026-07-02T08:09:09.355214+00:00",
+  "corroborations": []
+ },
+ {
+  "signal": {
+   "mention_id": "truthsocial:116833127066912322",
+   "is_signal": true,
+   "priority": "P4",
+   "direction": "bullish",
+   "asset_type": "macro",
+   "tickers": [
+    "DJT"
+   ],
+   "entities": [
+    "gas"
+   ],
+   "exact_quote": "GAS PRICES COMING DOWN, FAST!",
+   "confidence": 0.6,
+   "rationale": "The statement implies a positive impact on the gas market, which could affect related industries.",
+   "sarcasm_or_negation": false
+  },
+  "source": "truthsocial",
+  "author": "Donald Trump",
+  "url": "https://truthsocial.com/@realDonaldTrump/116833127066912322",
+  "timestamp_utc": "2026-06-29T11:20:41.422Z",
+  "source_text": "GAS PRICES COMING DOWN, FAST! REPORT ANY ABUSES AT RETAIL LEVEL!!! President DJT",
+  "llm_provider": "groq",
+  "classified_at_utc": "2026-07-02T13:45:34.349200+00:00",
+  "corroborations": []
+ },
+ {
+  "signal": {
+   "mention_id": "truthsocial:116833138299035157",
+   "is_signal": true,
+   "priority": "P3",
+   "direction": "bearish",
+   "asset_type": "sector",
+   "tickers": [
+    "DJT"
+   ],
+   "entities": [
+    "WTI CRUDE"
+   ],
+   "exact_quote": "WTI CRUDE - $69, and heading down.",
+   "confidence": 0.8,
+   "rationale": "The statement mentions a specific commodity, WTI CRUDE, and implies a downward trend.",
+   "sarcasm_or_negation": false
+  },
+  "source": "truthsocial",
+  "author": "Donald Trump",
+  "url": "https://truthsocial.com/@realDonaldTrump/116833138299035157",
+  "timestamp_utc": "2026-06-29T11:23:32.814Z",
+  "source_text": "WTI CRUDE - $69, and heading down. This is less than it was prior to the start of the Denuclearization of Iran! President DJT",
+  "llm_provider": "groq",
+  "classified_at_utc": "2026-07-02T13:45:35.730169+00:00",
+  "corroborations": []
+ }
+]

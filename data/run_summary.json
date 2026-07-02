@@ -1,0 +1,26 @@
+{
+ "new": 327,
+ "skipped_no_text": 88,
+ "skipped_not_trump": 37,
+ "prefiltered_out": 99,
+ "classified_signal": 8,
+ "classified_non_signal": 41,
+ "classification_failed": 54,
+ "quote_verification_failed": 0,
+ "alerts": {
+  "sent": 0,
+  "failed": 0
+ },
+ "prefilter_pass_rate_pct": 51.0,
+ "signal_priorities": [
+  "P1",
+  "P4",
+  "P4",
+  "P4",
+  "P3",
+  "P3",
+  "P4",
+  "P4"
+ ],
+ "run_at_utc": "2026-07-02T04:43:14.155685+00:00"
+}
