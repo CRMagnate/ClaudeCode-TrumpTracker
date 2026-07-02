@@ -9,6 +9,7 @@ from __future__ import annotations
 import json
 import logging
 import os
+import time
 
 import requests
 
@@ -48,22 +49,32 @@ def _call_provider(name: str, messages: list[dict], max_tokens: int) -> str:
     if not key:
         raise requests.ConnectionError(f"{name}: no API key configured")
     model = os.environ.get(cfg["model_env"]) or cfg["default_model"]
-    resp = requests.post(
-        f"{cfg['base_url']}/chat/completions",
-        headers={"Authorization": f"Bearer {key}"},
-        json={
-            "model": model,
-            "messages": messages,
-            "temperature": 0,
-            "max_tokens": max_tokens,
-            "response_format": {"type": "json_object"},
-        },
-        timeout=60,
-    )
-    if resp.status_code == 429 or resp.status_code >= 500:
-        raise requests.HTTPError(f"{name}: HTTP {resp.status_code}", response=resp)
-    resp.raise_for_status()  # 4xx other than 429 = config error, don't failover silently
-    return resp.json()["choices"][0]["message"]["content"]
+
+    for attempt in (1, 2):
+        resp = requests.post(
+            f"{cfg['base_url']}/chat/completions",
+            headers={"Authorization": f"Bearer {key}"},
+            json={
+                "model": model,
+                "messages": messages,
+                "temperature": 0,
+                "max_tokens": max_tokens,
+                "response_format": {"type": "json_object"},
+            },
+            timeout=60,
+        )
+        if resp.status_code == 429 and attempt == 1:
+            # Rate limit: honor Retry-After (capped) once before failing over,
+            # so a burst (e.g. backfill) doesn't burn mentions as failed.
+            wait = min(float(resp.headers.get("retry-after") or 10), 30.0)
+            log.info("%s rate-limited; waiting %.1fs and retrying", name, wait)
+            time.sleep(wait)
+            continue
+        if resp.status_code == 429 or resp.status_code >= 500:
+            raise requests.HTTPError(f"{name}: HTTP {resp.status_code}", response=resp)
+        resp.raise_for_status()  # other 4xx = config error, don't failover silently
+        return resp.json()["choices"][0]["message"]["content"]
+    raise requests.HTTPError(f"{name}: HTTP 429 after retry")
 
 
 def chat_json(system: str, user: str, max_tokens: int = 700) -> tuple[str, str]:
