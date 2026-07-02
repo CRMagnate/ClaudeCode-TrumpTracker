@@ -108,6 +108,62 @@ body {
 .kpi-value .up { color: var(--bull); }
 .kpi-value .down { color: var(--bear); }
 
+/* ── Constellation ───────────────────────────────────────── */
+.constellation-panel {
+  background: linear-gradient(180deg, rgba(10, 14, 22, 0.9), rgba(8, 11, 17, 0.7));
+  border: 1px solid var(--border);
+  border-radius: var(--radius);
+  padding: 16px 16px 12px;
+  margin-bottom: 14px;
+  backdrop-filter: blur(8px);
+  overflow: hidden;
+  position: relative;
+}
+.constellation-stage {
+  position: relative;
+  height: 340px;
+  margin: 4px -6px 6px;
+  border-radius: 12px;
+  background:
+    radial-gradient(420px 220px at 50% 45%, rgba(94, 234, 212, 0.045), transparent 70%),
+    radial-gradient(300px 180px at 20% 80%, rgba(99, 102, 241, 0.05), transparent 70%);
+}
+#constellation { display: block; touch-action: none; cursor: grab; }
+#constellation:active { cursor: grabbing; }
+.ct-tooltip {
+  position: absolute; z-index: 5; max-width: 220px;
+  pointer-events: none;
+  background: rgba(10, 14, 20, 0.92);
+  border: 1px solid var(--border-strong);
+  border-radius: 10px;
+  padding: 9px 11px;
+  backdrop-filter: blur(10px);
+  box-shadow: 0 8px 24px rgba(0, 0, 0, 0.5);
+}
+.ct-head { font-family: var(--mono); font-size: 0.72rem; font-weight: 700; color: var(--accent); }
+.ct-quote { font-size: 0.74rem; color: var(--text); margin-top: 4px; font-style: italic; }
+.ct-meta { font-family: var(--mono); font-size: 0.62rem; color: var(--faint); margin-top: 5px; }
+.legend { display: flex; gap: 14px; flex-wrap: wrap; }
+.lg {
+  display: inline-flex; align-items: center; gap: 6px;
+  font-family: var(--mono); font-size: 0.62rem; color: var(--faint);
+}
+.sw { width: 8px; height: 8px; border-radius: 50%; display: inline-block; }
+.sw.green { background: var(--bull); box-shadow: 0 0 6px rgba(52, 211, 153, 0.8); }
+.sw.yellow { background: var(--p3); box-shadow: 0 0 6px rgba(255, 214, 107, 0.6); }
+.sw.red { background: var(--bear); box-shadow: 0 0 6px rgba(251, 113, 133, 0.7); }
+.sw.hub { background: var(--accent); box-shadow: 0 0 8px rgba(94, 234, 212, 0.9); }
+
+.card.flash { animation: cardflash 1.6s ease; }
+@keyframes cardflash {
+  0%, 60% { border-color: var(--accent); box-shadow: 0 0 24px rgba(94, 234, 212, 0.25); }
+  100% { border-color: var(--border); box-shadow: none; }
+}
+
+@media (max-width: 560px) {
+  .constellation-stage { height: 280px; }
+}
+
 /* ── Evidence panel ──────────────────────────────────────── */
 .evidence {
   background: linear-gradient(180deg, var(--surface-2), var(--surface));

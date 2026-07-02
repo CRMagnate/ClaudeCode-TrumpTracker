@@ -162,6 +162,7 @@ function sparkline(horizons, bearish) {
 function card(rec) {
   const s = rec.signal;
   const c = el("article", "card");
+  c.dataset.mentionId = s.mention_id;   // constellation click-through target
 
   const head = el("div", "head");
   head.appendChild(el("span", `badge ${s.priority}`, s.priority));
@@ -314,6 +315,7 @@ async function init() {
     status.appendChild(el("p", null,
       "Could not load data/signals.json. If you opened this file directly, serve it over HTTP (GitHub Pages or `python3 -m http.server`)."));
     renderSync(false);
+    if (typeof Constellation !== "undefined") Constellation.init([], null);
     return;
   }
   try { state.prices = await fetchJSON("data/prices.json"); } catch { state.prices = null; }
@@ -324,6 +326,9 @@ async function init() {
   renderKPIs();
   renderEvidence();
   renderFeed();
+  if (typeof Constellation !== "undefined") {
+    Constellation.init(state.signals, state.prices);
+  }
 }
 
 init();

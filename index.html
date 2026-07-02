@@ -41,6 +41,23 @@
   <div class="kpi"><span class="kpi-value" id="k-latest">–</span><span class="kpi-label">latest signal</span></div>
 </section>
 
+<section class="constellation-panel" aria-label="Signal constellation">
+  <div class="panel-head">
+    <h2>Constellation</h2>
+    <span class="panel-note">drag to orbit · hover a node · click to open</span>
+  </div>
+  <div class="constellation-stage">
+    <canvas id="constellation"></canvas>
+    <div id="ct-tooltip" class="ct-tooltip" hidden></div>
+  </div>
+  <div class="legend">
+    <span class="lg"><i class="sw green"></i>strong / confirmed</span>
+    <span class="lg"><i class="sw yellow"></i>moderate / unproven</span>
+    <span class="lg"><i class="sw red"></i>bearish / contradicted</span>
+    <span class="lg"><i class="sw hub"></i>asset hub — glows with confirmations</span>
+  </div>
+</section>
+
 <section class="evidence" id="evidence" aria-label="Evidence panel">
   <div class="panel-head">
     <h2>Evidence</h2>
@@ -93,6 +110,7 @@
   <p id="foot-meta" class="mono"></p>
 </footer>
 
+<script src="assets/constellation.js"></script>
 <script src="assets/app.js"></script>
 </body>
 </html>
