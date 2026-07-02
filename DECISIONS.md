@@ -16,3 +16,4 @@ One line per judgment call, per the freedom contract (§13).
 - 2026-07-01: Groq default model `llama-3.3-70b-versatile`, Gemini default `gemini-2.0-flash`; both overridable via env.
 - 2026-07-01: HTTP 4xx other than 429 from a provider does NOT fail over (it's a config error, e.g. bad key) — it fails the classification loudly instead.
 - 2026-07-01: Feed items are processed oldest-first so the persisted cursor always trails completed work.
+- 2026-07-01: Dashboard v2: KPI strip, pill filters, client-side search, SVG sparklines; bearish returns are win-colored (green = winning short) matching §7's inverted evaluation; Inter/JetBrains Mono via Google Fonts (graceful system-font fallback).
