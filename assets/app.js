@@ -320,6 +320,8 @@ async function init() {
   }
   try { state.prices = await fetchJSON("data/prices.json"); } catch { state.prices = null; }
   try { state.summary = await fetchJSON("data/run_summary.json"); } catch { state.summary = null; }
+  let entities = null;
+  try { entities = await fetchJSON("config/entities.json"); } catch { entities = null; }
 
   status.remove();
   renderSync(true);
@@ -327,7 +329,7 @@ async function init() {
   renderEvidence();
   renderFeed();
   if (typeof Constellation !== "undefined") {
-    Constellation.init(state.signals, state.prices);
+    Constellation.init(state.signals, state.prices, entities);
   }
 }
 

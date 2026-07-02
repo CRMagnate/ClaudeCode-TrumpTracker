@@ -264,24 +264,47 @@ const Constellation = (() => {
 
       ctx.shadowColor = rgba(n.color === "hub" && n.green ? "green" : n.color, 0.8);
       ctx.shadowBlur = glow * p.s;
-      // sphere shading: off-center highlight -> body color -> darker limb
-      const [cr, cg, cb] = COLORS[n.color];
-      const grad = ctx.createRadialGradient(
-        p.x - r * 0.35, p.y - r * 0.35, r * 0.1, p.x, p.y, r);
-      grad.addColorStop(0, `rgba(${cr + (255 - cr) * 0.75},${cg + (255 - cg) * 0.75},${cb + (255 - cb) * 0.75},${alpha})`);
-      grad.addColorStop(0.55, rgba(n.color, alpha));
-      grad.addColorStop(1, `rgba(${cr * 0.35},${cg * 0.35},${cb * 0.35},${alpha * 0.9})`);
-      ctx.fillStyle = grad;
-      ctx.beginPath();
-      ctx.arc(p.x, p.y, r, 0, TAU);
-      ctx.fill();
-      ctx.shadowBlur = 0;
+      if (n.img) {
+        // logo coin: glowing light disc, circular-clipped favicon, colored ring
+        const R = r * 1.5;
+        ctx.fillStyle = `rgba(238,242,248,${0.95 * alpha})`;
+        ctx.beginPath();
+        ctx.arc(p.x, p.y, R, 0, TAU);
+        ctx.fill();
+        ctx.shadowBlur = 0;
+        ctx.save();
+        ctx.beginPath();
+        ctx.arc(p.x, p.y, R * 0.82, 0, TAU);
+        ctx.clip();
+        ctx.globalAlpha = alpha;
+        ctx.drawImage(n.img, p.x - R * 0.82, p.y - R * 0.82, R * 1.64, R * 1.64);
+        ctx.restore();
+        ctx.strokeStyle = rgba(n.green ? "green" : "hub", 0.85 * alpha);
+        ctx.lineWidth = 1.6 * p.s;
+        ctx.beginPath();
+        ctx.arc(p.x, p.y, R, 0, TAU);
+        ctx.stroke();
+      } else {
+        // sphere shading: off-center highlight -> body color -> darker limb
+        const [cr, cg, cb] = COLORS[n.color];
+        const grad = ctx.createRadialGradient(
+          p.x - r * 0.35, p.y - r * 0.35, r * 0.1, p.x, p.y, r);
+        grad.addColorStop(0, `rgba(${cr + (255 - cr) * 0.75},${cg + (255 - cg) * 0.75},${cb + (255 - cb) * 0.75},${alpha})`);
+        grad.addColorStop(0.55, rgba(n.color, alpha));
+        grad.addColorStop(1, `rgba(${cr * 0.35},${cg * 0.35},${cb * 0.35},${alpha * 0.9})`);
+        ctx.fillStyle = grad;
+        ctx.beginPath();
+        ctx.arc(p.x, p.y, r, 0, TAU);
+        ctx.fill();
+        ctx.shadowBlur = 0;
+      }
 
+      const eff = n.img ? r * 1.5 : r;   // logo coins render larger
       if (n === hovered) {
         ctx.strokeStyle = rgba(n.color, 0.9);
         ctx.lineWidth = 1.2;
         ctx.beginPath();
-        ctx.arc(p.x, p.y, r + 4, 0, TAU);
+        ctx.arc(p.x, p.y, eff + 4, 0, TAU);
         ctx.stroke();
       }
       if (n.label && (p.s > 0.86 || n === hovered)) {
@@ -290,7 +313,7 @@ const Constellation = (() => {
         ctx.textAlign = "center";
         const tag = n.members && n.members.length > 1
           ? `${n.label} ×${n.members.length}` : n.label;
-        ctx.fillText(tag, p.x, p.y - r - 7);
+        ctx.fillText(tag, p.x, p.y - eff - 7);
       }
     }
   }
@@ -421,7 +444,30 @@ const Constellation = (() => {
 
   /* ── public API ─────────────────────────────────────────── */
 
-  function init(signals, prices) {
+  function buildDomainMap(entities) {
+    const map = new Map();
+    if (!entities || !Array.isArray(entities.entities)) return map;
+    for (const e of entities.entities) {
+      if (!e.domain) continue;
+      if (e.ticker) map.set(e.ticker, e.domain);
+      map.set(String(e.name).toLowerCase(), e.domain);
+    }
+    return map;
+  }
+
+  function loadLogo(hub, domain) {
+    const img = new Image();
+    img.referrerPolicy = "no-referrer";
+    img.decoding = "async";
+    img.onload = () => {
+      // Google's favicon service serves a tiny generic globe for unknown
+      // domains — treat those as "no logo" and keep the orb.
+      if (img.naturalWidth >= 32) hub.img = img;
+    };
+    img.src = `https://www.google.com/s2/favicons?domain=${encodeURIComponent(domain)}&sz=64`;
+  }
+
+  function init(signals, prices, entities) {
     canvas = document.getElementById("constellation");
     tooltip = document.getElementById("ct-tooltip");
     if (!canvas) return;
@@ -430,6 +476,13 @@ const Constellation = (() => {
     resize();
     window.addEventListener("resize", () => { resize(); });
     build(signals, prices);
+    const domains = buildDomainMap(entities);
+    for (const h of hubs) {
+      if (!h.label) continue;
+      const d = domains.get(h.label.split(" ")[0]) ||
+                domains.get(h.label.toLowerCase());
+      if (d) loadLogo(h, d);
+    }
     wire();
     if (!raf) frame();
     if (reduced) draw();
