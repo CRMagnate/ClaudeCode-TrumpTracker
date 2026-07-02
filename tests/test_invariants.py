@@ -92,6 +92,7 @@ def test_i6_groq_429_fails_over_to_gemini(monkeypatch):
         def __init__(self, status, content=""):
             self.status_code = status
             self._content = content
+            self.headers = {"retry-after": "0"}  # keep the 429 retry instant
         def raise_for_status(self):
             if self.status_code >= 400:
                 raise requests.HTTPError(f"HTTP {self.status_code}")
@@ -107,7 +108,8 @@ def test_i6_groq_429_fails_over_to_gemini(monkeypatch):
     monkeypatch.setattr(llm.requests, "post", fake_post)
     content, provider = llm.chat_json("sys", "user")
     assert provider == "gemini"
-    assert len(seen) == 2
+    # groq is tried twice (one polite retry on 429), then gemini succeeds
+    assert len(seen) == 3
 
 
 def test_i6_all_providers_down_raises_cleanly(monkeypatch):
