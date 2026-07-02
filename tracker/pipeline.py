@@ -32,12 +32,19 @@ def load_dotenv(path: str = ".env") -> None:
     p = Path(path)
     if not p.exists():
         return
+    import re
     for line in p.read_text().splitlines():
         line = line.strip()
         if not line or line.startswith("#") or "=" not in line:
             continue
         k, _, v = line.partition("=")
-        os.environ.setdefault(k.strip(), v.strip())
+        # Strip inline comments (whitespace + #). Quoted values keep everything.
+        v = v.strip()
+        if v.startswith('"') and v.endswith('"') and len(v) >= 2:
+            v = v[1:-1]
+        else:
+            v = re.split(r"\s+#", v)[0].strip()
+        os.environ.setdefault(k.strip(), v)
 
 
 def _now_iso() -> str:
