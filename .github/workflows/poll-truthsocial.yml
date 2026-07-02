@@ -1,0 +1,75 @@
+name: poll-truthsocial
+
+on:
+  schedule:
+    - cron: "*/5 * * * *"   # GitHub drifts this to ~5-15 min under load (see README)
+  workflow_dispatch:
+    inputs:
+      backfill_days:
+        description: "Backfill window in days (first run only)"
+        required: false
+        default: ""
+
+permissions:
+  contents: write
+
+# Queue runs instead of overlapping: concurrent commits to data/ corrupt state (§9).
+concurrency:
+  group: data-writes
+  cancel-in-progress: false
+
+jobs:
+  poll:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: actions/setup-python@v5
+        with:
+          python-version: "3.12"
+          cache: pip
+
+      - run: pip install -r requirements.txt
+
+      - name: Ingest → prefilter → classify → store → alert
+        env:
+          GROQ_API_KEY: ${{ secrets.GROQ_API_KEY }}
+          GEMINI_API_KEY: ${{ secrets.GEMINI_API_KEY }}
+          TELEGRAM_BOT_TOKEN: ${{ secrets.TELEGRAM_BOT_TOKEN }}
+          TELEGRAM_CHAT_ID: ${{ secrets.TELEGRAM_CHAT_ID }}
+          EMAIL_SMTP_HOST: ${{ secrets.EMAIL_SMTP_HOST }}
+          EMAIL_SMTP_PORT: ${{ secrets.EMAIL_SMTP_PORT }}
+          EMAIL_USER: ${{ secrets.EMAIL_USER }}
+          EMAIL_PASSWORD: ${{ secrets.EMAIL_PASSWORD }}
+          EMAIL_TO: ${{ secrets.EMAIL_TO }}
+          RESEND_API_KEY: ${{ secrets.RESEND_API_KEY }}
+          RESEND_FROM: ${{ secrets.RESEND_FROM }}
+          RESEND_TO: ${{ secrets.RESEND_TO }}
+        run: |
+          ARGS=""
+          if [ -n "${{ inputs.backfill_days }}" ]; then ARGS="--backfill-days ${{ inputs.backfill_days }}"; fi
+          python -m tracker.pipeline poll $ARGS
+
+      - name: Commit data (message is a fixed template with counts only — I3)
+        run: |
+          git config user.name "tracker-bot"
+          git config user.email "actions@users.noreply.github.com"
+          git add data/
+          if git diff --cached --quiet; then
+            echo "no data changes"
+            exit 0
+          fi
+          MSG=$(python - <<'EOF'
+          import json
+          s = json.load(open("data/run_summary.json"))
+          pr = ",".join(s.get("signal_priorities") or []) or "none"
+          print(f"data: {s['new']} new mentions, {s['classified_signal']} signals ({pr})")
+          EOF
+          )
+          git commit -m "$MSG"
+          for i in 1 2 3; do
+            if git push; then exit 0; fi
+            git pull --rebase
+            sleep $i
+          done
+          git push
