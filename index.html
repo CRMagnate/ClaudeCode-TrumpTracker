@@ -1,0 +1,50 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<meta name="color-scheme" content="dark">
+<title>Trump Market-Signal Tracker</title>
+<link rel="stylesheet" href="assets/style.css">
+</head>
+<body>
+<header>
+  <h1>Market-Signal Tracker</h1>
+  <p class="sub">Public statements → classified signals → benchmark-relative outcomes. Informational only; nothing here is advice.</p>
+</header>
+
+<section id="evidence" class="panel" hidden>
+  <h2>Evidence panel</h2>
+  <div id="evidence-body"></div>
+</section>
+
+<section class="filters" aria-label="Filters">
+  <select id="f-priority">
+    <option value="">Priority: all</option>
+    <option>P1</option><option>P2</option><option>P3</option><option>P4</option>
+  </select>
+  <select id="f-direction">
+    <option value="">Direction: all</option>
+    <option value="bullish">bullish</option>
+    <option value="bearish">bearish</option>
+  </select>
+  <select id="f-source">
+    <option value="">Source: all</option>
+    <option value="truthsocial">truthsocial</option>
+    <option value="news">news</option>
+    <option value="transcript">transcript</option>
+  </select>
+  <input type="date" id="f-from" title="From date">
+  <input type="date" id="f-to" title="To date">
+</section>
+
+<main id="feed" aria-live="polite">
+  <p id="status">Loading signals…</p>
+</main>
+
+<footer>
+  <p>Data updates via scheduled polling; cron drift of 5–15&nbsp;min is normal.</p>
+</footer>
+<script src="assets/app.js"></script>
+</body>
+</html>
