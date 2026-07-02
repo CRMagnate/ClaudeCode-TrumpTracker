@@ -4,47 +4,95 @@
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
 <meta name="color-scheme" content="dark">
-<title>Trump Market-Signal Tracker</title>
+<meta name="description" content="Trump Market-Signal Tracker — public statements, classified signals, benchmark-relative outcomes.">
+<title>Signal Tracker</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&family=JetBrains+Mono:wght@400;600&display=swap" rel="stylesheet">
 <link rel="stylesheet" href="assets/style.css">
+<link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><text y='.9em' font-size='90'>📡</text></svg>">
 </head>
 <body>
-<header>
-  <h1>Market-Signal Tracker</h1>
-  <p class="sub">Public statements → classified signals → benchmark-relative outcomes. Informational only; nothing here is advice.</p>
+
+<div class="bg-glow" aria-hidden="true"></div>
+
+<header class="topbar">
+  <div class="brand">
+    <div class="logo" aria-hidden="true">
+      <svg viewBox="0 0 24 24" width="22" height="22" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round">
+        <path d="M3 17l5-6 4 3 6-8"/><circle cx="18" cy="6" r="1.6" fill="currentColor" stroke="none"/>
+      </svg>
+    </div>
+    <div>
+      <h1>Signal Tracker</h1>
+      <p class="tagline">statements → signals → evidence</p>
+    </div>
+  </div>
+  <div class="sync" id="sync">
+    <span class="dot" id="sync-dot" aria-hidden="true"></span>
+    <span id="sync-label">connecting…</span>
+  </div>
 </header>
 
-<section id="evidence" class="panel" hidden>
-  <h2>Evidence panel</h2>
-  <div id="evidence-body"></div>
+<section class="kpis" id="kpis" aria-label="Key metrics">
+  <div class="kpi"><span class="kpi-value" id="k-total">–</span><span class="kpi-label">signals</span></div>
+  <div class="kpi"><span class="kpi-value" id="k-critical">–</span><span class="kpi-label">P1 · P2</span></div>
+  <div class="kpi"><span class="kpi-value" id="k-split">–</span><span class="kpi-label">bull / bear</span></div>
+  <div class="kpi"><span class="kpi-value" id="k-latest">–</span><span class="kpi-label">latest signal</span></div>
 </section>
 
-<section class="filters" aria-label="Filters">
-  <select id="f-priority">
-    <option value="">Priority: all</option>
-    <option>P1</option><option>P2</option><option>P3</option><option>P4</option>
-  </select>
-  <select id="f-direction">
-    <option value="">Direction: all</option>
-    <option value="bullish">bullish</option>
-    <option value="bearish">bearish</option>
-  </select>
-  <select id="f-source">
-    <option value="">Source: all</option>
-    <option value="truthsocial">truthsocial</option>
-    <option value="news">news</option>
-    <option value="transcript">transcript</option>
-  </select>
-  <input type="date" id="f-from" title="From date">
-  <input type="date" id="f-to" title="To date">
+<section class="evidence" id="evidence" aria-label="Evidence panel">
+  <div class="panel-head">
+    <h2>Evidence</h2>
+    <span class="panel-note">excess return vs SPY · adjusted closes · trading-day horizons</span>
+  </div>
+  <div id="evidence-body" class="evidence-body">
+    <p class="placeholder">Outcome tracking activates once horizon returns are computed (evidence layer, M2). Every number will carry its <span class="mono">n</span>.</p>
+  </div>
 </section>
+
+<nav class="filters" aria-label="Filters">
+  <div class="pill-row" id="f-priority" role="group" aria-label="Priority">
+    <button class="pill active" data-value="">All</button>
+    <button class="pill p1" data-value="P1">P1</button>
+    <button class="pill p2" data-value="P2">P2</button>
+    <button class="pill p3" data-value="P3">P3</button>
+    <button class="pill p4" data-value="P4">P4</button>
+  </div>
+  <div class="pill-row" id="f-direction" role="group" aria-label="Direction">
+    <button class="pill active" data-value="">Both</button>
+    <button class="pill bull" data-value="bullish">▲ Bull</button>
+    <button class="pill bear" data-value="bearish">▼ Bear</button>
+  </div>
+  <div class="input-row">
+    <input type="search" id="f-search" placeholder="Search quotes, tickers, entities…" autocomplete="off">
+    <select id="f-source" aria-label="Source">
+      <option value="">All sources</option>
+      <option value="truthsocial">Truth Social</option>
+      <option value="news">News</option>
+      <option value="transcript">Transcripts</option>
+    </select>
+    <input type="date" id="f-from" aria-label="From date">
+    <input type="date" id="f-to" aria-label="To date">
+    <select id="f-sort" aria-label="Sort">
+      <option value="priority">Priority first</option>
+      <option value="recency">Newest first</option>
+    </select>
+  </div>
+</nav>
 
 <main id="feed" aria-live="polite">
-  <p id="status">Loading signals…</p>
+  <div class="empty" id="status">
+    <div class="spinner" aria-hidden="true"></div>
+    <p>Loading signals…</p>
+  </div>
 </main>
 
 <footer>
-  <p>Data updates via scheduled polling; cron drift of 5–15&nbsp;min is normal.</p>
+  <p><strong>Alert-only research tool.</strong> Nothing on this page is investment advice. Quotes are programmatically verified against their source before storage.</p>
+  <p id="foot-meta" class="mono"></p>
 </footer>
+
 <script src="assets/app.js"></script>
 </body>
 </html>
