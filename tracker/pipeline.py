@@ -145,6 +145,32 @@ def run_poll(backfill_days: int | None = None, limit: int | None = None,
     return summary
 
 
+def run_retry_failed(limit: int | None = None, store: Store | None = None,
+                     chat=None) -> dict:
+    """Re-classify mentions stuck in classification_failed (e.g. a provider
+    outage exhausted the failover). Updates records in place; idempotent."""
+    store = store or Store()
+    watchlist = Watchlist()
+    counts = {"retried": 0, "classified_signal": 0, "classified_non_signal": 0,
+              "classification_failed": 0, "quote_verification_failed": 0}
+    for record in store.mentions:
+        if record["status"] != "classification_failed":
+            continue
+        if limit is not None and counts["retried"] >= limit:
+            break
+        counts["retried"] += 1
+        mention = RawMention(**record["mention"])
+        signal_rec, status, err = classify_mention(mention, watchlist, chat=chat)
+        if signal_rec is not None and not store.has_signal(mention.id):
+            store.add_signal(json.loads(signal_rec.model_dump_json()))
+        record["status"] = status
+        record["error"] = err
+        counts[status] += 1
+    store.save()
+    log.info("retry summary: %s", json.dumps(counts))
+    return counts
+
+
 def run_test_alert() -> None:
     """Send a live P1-formatted test alert on every configured channel (M1 DoD)."""
     rec = {
@@ -178,6 +204,8 @@ def main() -> int:
     poll.add_argument("--limit", type=int, default=None, help="max LLM classifications this run")
     poll.add_argument("--no-alerts", action="store_true")
     sub.add_parser("test-alert", help="send a P1-formatted test alert")
+    retry = sub.add_parser("retry-failed", help="re-classify classification_failed mentions")
+    retry.add_argument("--limit", type=int, default=None)
     args = ap.parse_args()
 
     if args.cmd == "poll":
@@ -185,6 +213,8 @@ def main() -> int:
                  send_alerts=not args.no_alerts)
     elif args.cmd == "test-alert":
         run_test_alert()
+    elif args.cmd == "retry-failed":
+        run_retry_failed(limit=args.limit)
     return 0
 
 

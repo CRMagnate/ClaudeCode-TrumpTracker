@@ -22,7 +22,7 @@ const Constellation = (() => {
     hub: [94, 234, 212],
     faint: [92, 101, 117],
   };
-  const FOCAL = 420;           // perspective focal length
+  const FOCAL = 290;           // shorter focal length = stronger perspective
   const AUTO_SPIN = 0.0022;    // radians / frame
   const TAU = Math.PI * 2;
 
@@ -69,7 +69,25 @@ const Constellation = (() => {
     const y = n === 1 ? 0 : 1 - (i / (n - 1)) * 2;
     const rad = Math.sqrt(Math.max(0, 1 - y * y));
     const th = golden * i;
-    return { x: Math.cos(th) * rad * r, y: y * r * 0.72, z: Math.sin(th) * rad * r };
+    return { x: Math.cos(th) * rad * r, y: y * r * 0.85, z: Math.sin(th) * rad * r };
+  }
+
+  function orbitPlane(seed) {
+    // deterministic tilted orbit plane: two orthonormal basis vectors
+    const a = Math.sin(seed * 12.9898) * 43758.5453;
+    const b = Math.sin(seed * 78.233) * 12543.117;
+    const ax = { x: Math.sin(a), y: 0.55 + 0.45 * Math.sin(b), z: Math.cos(a) };
+    const m = Math.hypot(ax.x, ax.y, ax.z);
+    ax.x /= m; ax.y /= m; ax.z /= m;
+    let u = { x: -ax.z, y: 0, z: ax.x };
+    const mu = Math.hypot(u.x, u.y, u.z) || 1;
+    u = { x: u.x / mu, y: u.y / mu, z: u.z / mu };
+    const v = {
+      x: ax.y * u.z - ax.z * u.y,
+      y: ax.z * u.x - ax.x * u.z,
+      z: ax.x * u.y - ax.y * u.x,
+    };
+    return { u, v };
   }
 
   function build(signals, prices) {
@@ -92,34 +110,49 @@ const Constellation = (() => {
       return;
     }
 
-    const byKey = new Map();
+    const byKey = new Map();   // casefolded key -> {label, members}
     for (const rec of signals) {
       const s = rec.signal;
-      const key = (s.tickers && s.tickers[0]) || (s.entities && s.entities[0]) || "—";
-      if (!byKey.has(key)) byKey.set(key, []);
-      byKey.get(key).push(rec);
+      const ticker = s.tickers && s.tickers[0];
+      const raw = ticker || (s.entities && s.entities[0]) || "—";
+      const key = ticker ? raw : raw.toLowerCase();
+      if (!byKey.has(key)) {
+        byKey.set(key, {
+          label: ticker ? raw : raw.charAt(0).toUpperCase() + raw.slice(1).toLowerCase(),
+          members: [],
+        });
+      }
+      byKey.get(key).members.push(rec);
     }
 
     const keys = [...byKey.keys()];
     keys.forEach((key, i) => {
-      const members = byKey.get(key);
+      const { label, members } = byKey.get(key);
       const p = fibonacciSphere(i, keys.length, 132);
       const hub = {
-        ...p, label: key, members,
-        size: 3.4 + Math.min(members.length * 1.1, 6),
+        ...p, label, members,
+        size: 3.6 + Math.min(members.length * 1.2, 7),
         color: "hub", green: 0, phase: Math.random() * TAU,
+        shells: [],
       };
+      // up to 3 tilted orbital shells; more mentions -> more populated shells
+      const nShells = Math.min(3, Math.ceil(members.length / 3));
+      for (let sh = 0; sh < nShells; sh++) {
+        hub.shells.push({ ...orbitPlane(i * 3.7 + sh * 1.31), r: 30 + sh * 13 });
+      }
       hubs.push(hub);
       members.forEach((rec, j) => {
         const s = rec.signal;
         const xs = latestExcess(prices, s.mention_id);
-        const a1 = (j / members.length) * TAU + i, a2 = ((j * 2.4) % TAU);
-        const r = 30 + (j % 3) * 8;
+        const shell = hub.shells[j % hub.shells.length];
+        const base = s.priority === "P1" ? 4.8 : s.priority === "P2" ? 3.9 : 3.1;
         const node = {
-          x: hub.x + Math.cos(a1) * Math.cos(a2) * r,
-          y: hub.y + Math.sin(a2) * r * 0.8,
-          z: hub.z + Math.sin(a1) * Math.cos(a2) * r,
-          rec, size: s.priority === "P1" ? 4.6 : s.priority === "P2" ? 3.8 : 3.0,
+          hub, shell,
+          orbitPhase: (Math.floor(j / hub.shells.length) /
+            Math.max(1, Math.ceil(members.length / hub.shells.length))) * TAU + j * 0.35,
+          speed: (0.0045 + (j % 4) * 0.0011) * (j % 2 ? 1 : -1),
+          x: 0, y: 0, z: 0,   // filled per-frame from the orbit
+          rec, size: base * (0.75 + 0.5 * Number(s.confidence || 0.5)),
           color: nodeColor(s, xs), pulse: s.priority === "P1",
           phase: Math.random() * TAU,
         };
@@ -166,10 +199,43 @@ const Constellation = (() => {
       ctx.fillRect(p.x, p.y, 1.3, 1.3);
     }
 
+    // hubs first (nodes orbit around their hub's animated position)
     const projected = [];
-    for (const n of [...hubs, ...nodes]) {
-      n._p = project(bob(n, n.phase), cy, sy, cx, sx);
+    for (const h of hubs) {
+      h._w = bob(h, h.phase);
+      h._p = project(h._w, cy, sy, cx, sx);
+      projected.push(h);
+    }
+    for (const n of nodes) {
+      const th = n.orbitPhase + (reduced ? 0 : t * n.speed);
+      const { u, v } = n.shell, r = n.shell.r, c = n.hub._w;
+      n._w = {
+        x: c.x + (u.x * Math.cos(th) + v.x * Math.sin(th)) * r,
+        y: c.y + (u.y * Math.cos(th) + v.y * Math.sin(th)) * r,
+        z: c.z + (u.z * Math.cos(th) + v.z * Math.sin(th)) * r,
+      };
+      n._p = project(n._w, cy, sy, cx, sx);
       projected.push(n);
+    }
+
+    // orbit rings: faint projected ellipses make the geometry legible as 3D
+    for (const h of hubs) {
+      if (!h.shells || !h.shells.length) continue;
+      for (const sh of h.shells) {
+        ctx.strokeStyle = rgba(h.green ? "green" : "faint", h.green ? 0.10 : 0.08);
+        ctx.lineWidth = 0.7;
+        ctx.beginPath();
+        for (let k = 0; k <= 36; k++) {
+          const a = (k / 36) * TAU;
+          const p = project({
+            x: h._w.x + (sh.u.x * Math.cos(a) + sh.v.x * Math.sin(a)) * sh.r,
+            y: h._w.y + (sh.u.y * Math.cos(a) + sh.v.y * Math.sin(a)) * sh.r,
+            z: h._w.z + (sh.u.z * Math.cos(a) + sh.v.z * Math.sin(a)) * sh.r,
+          }, cy, sy, cx, sx);
+          if (k === 0) ctx.moveTo(p.x, p.y); else ctx.lineTo(p.x, p.y);
+        }
+        ctx.stroke();
+      }
     }
 
     // links first, back-to-front alpha by depth
@@ -198,7 +264,14 @@ const Constellation = (() => {
 
       ctx.shadowColor = rgba(n.color === "hub" && n.green ? "green" : n.color, 0.8);
       ctx.shadowBlur = glow * p.s;
-      ctx.fillStyle = rgba(n.color, alpha);
+      // sphere shading: off-center highlight -> body color -> darker limb
+      const [cr, cg, cb] = COLORS[n.color];
+      const grad = ctx.createRadialGradient(
+        p.x - r * 0.35, p.y - r * 0.35, r * 0.1, p.x, p.y, r);
+      grad.addColorStop(0, `rgba(${cr + (255 - cr) * 0.75},${cg + (255 - cg) * 0.75},${cb + (255 - cb) * 0.75},${alpha})`);
+      grad.addColorStop(0.55, rgba(n.color, alpha));
+      grad.addColorStop(1, `rgba(${cr * 0.35},${cg * 0.35},${cb * 0.35},${alpha * 0.9})`);
+      ctx.fillStyle = grad;
       ctx.beginPath();
       ctx.arc(p.x, p.y, r, 0, TAU);
       ctx.fill();
@@ -215,7 +288,9 @@ const Constellation = (() => {
         ctx.fillStyle = rgba("hub", Math.min(0.9, p.s - 0.2));
         ctx.font = `600 ${Math.round(10 * p.s)}px "JetBrains Mono", monospace`;
         ctx.textAlign = "center";
-        ctx.fillText(n.label, p.x, p.y - r - 6);
+        const tag = n.members && n.members.length > 1
+          ? `${n.label} ×${n.members.length}` : n.label;
+        ctx.fillText(tag, p.x, p.y - r - 7);
       }
     }
   }
