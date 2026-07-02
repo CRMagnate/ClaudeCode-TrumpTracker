@@ -1,0 +1,32 @@
+{
+  "_comment": "Market/sector vocabulary for the stage-1 prefilter. Matched case-insensitively on word boundaries. Tuned for high recall: a false positive costs one cheap LLM call.",
+  "keywords": [
+    "invest", "investment", "investor", "investing",
+    "stock", "stocks", "stock market", "shares", "shareholder",
+    "buy", "sell", "sold", "bought",
+    "market", "markets", "wall street", "nasdaq", "dow", "s&p", "500",
+    "ipo", "merger", "acquisition", "takeover",
+    "tariff", "tariffs", "trade deal", "trade war", "sanction", "sanctions",
+    "subsidy", "subsidies", "deregulation", "regulation", "antitrust",
+    "bailout", "tax cut", "tax cuts", "taxes",
+    "economy", "economic", "inflation", "interest rate", "interest rates",
+    "fed", "federal reserve", "dollar", "currency",
+    "oil", "gas", "drilling", "drill", "fracking", "coal", "energy",
+    "nuclear", "solar", "pipeline", "lng",
+    "crypto", "cryptocurrency", "bitcoin", "ethereum", "stablecoin",
+    "ai", "artificial intelligence", "semiconductor", "semiconductors", "chips", "chip",
+    "rare earth", "rare earths", "minerals", "mining",
+    "shipbuilding", "ships", "shipyard",
+    "defense", "defence", "military spending", "weapons", "missiles",
+    "pharma", "pharmaceutical", "drug prices", "vaccines",
+    "automaker", "automakers", "cars", "automobile", "ev", "electric vehicle",
+    "steel", "aluminum", "manufacturing", "factories", "factory",
+    "farmers", "agriculture", "crops",
+    "airline", "airlines", "aviation",
+    "bank", "banks", "banking",
+    "housing", "real estate", "construction",
+    "company", "companies", "corporation", "ceo",
+    "billion", "trillion",
+    "jobs", "hiring"
+  ]
+}
